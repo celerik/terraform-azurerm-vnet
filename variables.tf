@@ -1,31 +1,31 @@
 variable "location" {
   type        = string
-  description = "Region to create environment"
+  description = "The Azure region where the resources will be deployed (e.g., East US, West Europe)."
 }
 
 variable "resource_group_name" {
   type        = string
-  description = "Resource group name"
+  description = "The name of the Azure Resource Group to contain the virtual network."
 }
 
 variable "name" {
   type        = string
-  description = "Vnet name"
+  description = "The name of the virtual network to be created."
 }
 
 variable "vnet_address_space" {
   type        = string
-  description = "Vnet address space"
+  description = "The address space for the virtual network in CIDR notation (e.g., 10.0.0.0/16)."
 }
 
 variable "dns_servers" {
   type        = list(any)
-  description = "List of custom dns servers"
+  description = "A list of custom DNS server IP addresses to associate with the virtual network. Defaults to an empty list."
   default     = []
 }
 
 variable "tags" {
   type        = map(string)
-  description = "Tags"
+  description = "A map of key-value pairs to assign as tags to the virtual network. Defaults to an empty map."
   default     = {}
 }
