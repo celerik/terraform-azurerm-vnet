@@ -10,7 +10,7 @@ locals {
 ##  VIRTUAL NETWORK
 ## --------------------------------------
 
-resource "azurerm_virtual_network" "vnet" {
+resource "azurerm_virtual_network" "this" {
   name                = var.name
   address_space       = [var.vnet_address_space]
   location            = var.location
