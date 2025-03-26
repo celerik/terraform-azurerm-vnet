@@ -1,4 +1,3 @@
-
 # Terraform Azure Virtual Network Module
 
 This Terraform module creates an Azure Virtual Network (VNet) and supports the configuration of subnets as part of the VNet.
@@ -9,7 +8,7 @@ This Terraform module creates an Azure Virtual Network (VNet) and supports the c
 - Supports custom DNS servers.
 - Allows tagging of resources.
 - Provides outputs for the VNet's ID and name.
-- Includes a submodule for creating subnets.
+- Includes a submodule for creating subnets with service endpoints, address ranges, and private endpoint network policies.
 
 ## Usage
 
@@ -31,11 +30,12 @@ module "vnet" {
 module "subnet" {
   source = "./modules/terraform-azurerm-vnet/modules/snet"
 
-  name                 = "my-subnet"
-  resource_group_name  = "my-resource-group"
-  virtual_network_name = module.vnet.name
-  snet_address_range   = "10.0.1.0/24"
-  service_endpoints    = ["Microsoft.Storage"]
+  name                              = "my-subnet"
+  resource_group_name               = "my-resource-group"
+  virtual_network_name              = module.vnet.name
+  snet_address_range                = "10.0.1.0/24"
+  service_endpoints                 = ["Microsoft.Storage"]
+  private_endpoint_network_policies = false
 }
 ```
 
@@ -54,13 +54,14 @@ module "subnet" {
 
 ### Subnet Inputs
 
-| Name                | Type          | Description                                                                 | Default |
-|---------------------|---------------|-----------------------------------------------------------------------------|---------|
-| `resource_group_name` | `string`    | The name of the Azure Resource Group where the subnets will be created.     |         |
-| `virtual_network_name` | `string`   | The name of the virtual network that contains the subnets.                  |         |
-| `name`              | `string`      | The name of the subnet to be created.                                       |         |
-| `snet_address_range` | `string`     | The address range for the subnet in CIDR notation.                          |         |
-| `service_endpoints` | `set(string)` | A set of service endpoints to enable for the subnet. Defaults to an empty set. | `[]`    |
+| Name                             | Type          | Description                                                                 | Default |
+|----------------------------------|---------------|-----------------------------------------------------------------------------|---------|
+| `resource_group_name`            | `string`      | The name of the Azure Resource Group where the subnets will be created.     |         |
+| `virtual_network_name`           | `string`      | The name of the virtual network that contains the subnets.                  |         |
+| `name`                           | `string`      | The name of the subnet to be created.                                       |         |
+| `snet_address_range`             | `string`      | The address range for the subnet in CIDR notation.                          |         |
+| `service_endpoints`              | `set(string)` | A set of service endpoints to enable for the subnet. Defaults to an empty set. | `[]`    |
+| `private_endpoint_network_policies` | `string`     |Enable or Disable network policies for the private endpoint on the subnet. Defaults to `Disabled`. | `Disabled`  |
 
 ## Outputs
 
@@ -86,3 +87,19 @@ module "subnet" {
 ### Providers
 
 - AzureRM `>= 4.0`
+
+## File Structure
+
+```bash
+.
+├── main.tf
+├── outputs.tf
+├── variables.tf
+├── versions.tf
+├── modules/
+│   └── snet/
+│       ├── main.tf
+│       ├── outputs.tf
+│       ├── variables.tf
+│       ├── versions.tf
+```

@@ -20,7 +20,7 @@ variable "snet_address_range" {
 
 variable "private_endpoint_network_policies" {
   type        = string
-  description = "The network policies for the private endpoint in the subnet (e.g., Enabled, Disabled). Defaults to Disabled."
+  description = "Enable or Disable network policies for the private endpoint on the subnet. Possible values are 'Disabled', 'Enabled', 'NetworkSecurityGroupEnabled' and 'RouteTableEnabled'. Defaults to 'Disabled'"
   default     = "Disabled"
 }
 
