@@ -8,5 +8,6 @@ resource "azurerm_subnet" "snet" {
   virtual_network_name = var.virtual_network_name
   address_prefixes     = [var.snet_address_range]
 
-  service_endpoints = var.service_endpoints
+  private_endpoint_network_policies = var.private_endpoint_network_policies
+  service_endpoints                 = var.service_endpoints
 }
