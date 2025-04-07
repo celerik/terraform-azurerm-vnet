@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.4] - 2025-04-07
+
+### Added
+
+- Add Apache License file
+
 ## [1.0.3] - 2025-03-26
 
 ### Added
