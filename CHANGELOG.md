@@ -2,11 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.5] - 2025-04-11
+
+### Added
+
+- Added a new `peer` submodule for configuring VNet peering between virtual networks.
+- Updated `README.md` to include usage and input details for the `peer` submodule.
+- Updated `README.md` to reflect the Apache License 2.0.
+
 ## [1.0.4] - 2025-04-07
 
 ### Added
 
-- Add Apache License file
+- Add Apache License file.
 
 ## [1.0.3] - 2025-03-26
 

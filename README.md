@@ -1,6 +1,6 @@
 # Terraform Azure Virtual Network Module
 
-This Terraform module creates an Azure Virtual Network (VNet) and supports the configuration of subnets as part of the VNet.
+This Terraform module creates an Azure Virtual Network (VNet) and supports the configuration of subnets as part of the VNet. It also includes a submodule for configuring VNet peering.
 
 ## Features
 
@@ -9,8 +9,11 @@ This Terraform module creates an Azure Virtual Network (VNet) and supports the c
 - Allows tagging of resources.
 - Provides outputs for the VNet's ID and name.
 - Includes a submodule for creating subnets with service endpoints, address ranges, and private endpoint network policies.
+- Includes a submodule for configuring VNet peering between virtual networks.
 
 ## Usage
+
+### Virtual Network and Subnet
 
 ```hcl
 module "vnet" {
@@ -39,6 +42,22 @@ module "subnet" {
 }
 ```
 
+### VNet Peering
+
+```hcl
+module "vnet_peering" {
+  source = "./modules/terraform-azurerm-vnet/modules/peer"
+
+  name                  = "my-vnet-peering"
+  resource_group_name   = "my-resource-group"
+  virtual_network_name  = module.vnet.name
+  remote_virtual_network_id = "remote-vnet-id"
+  allow_forwarded_traffic = true
+  allow_gateway_transit   = false
+  use_remote_gateways     = false
+}
+```
+
 ## Inputs
 
 ### Virtual Network Inputs
@@ -61,7 +80,19 @@ module "subnet" {
 | `name`                           | `string`      | The name of the subnet to be created.                                       |         |
 | `snet_address_range`             | `string`      | The address range for the subnet in CIDR notation.                          |         |
 | `service_endpoints`              | `set(string)` | A set of service endpoints to enable for the subnet. Defaults to an empty set. | `[]`    |
-| `private_endpoint_network_policies` | `string`     |Enable or Disable network policies for the private endpoint on the subnet. Defaults to `Disabled`. | `Disabled`  |
+| `private_endpoint_network_policies` | `string`     | Whether to enable or disable private endpoint network policies for the subnet. Defaults to `Disabled`. | `Disabled`  |
+
+### VNet Peering Inputs
+
+| Name                     | Type          | Description                                                                 | Default |
+|--------------------------|---------------|-----------------------------------------------------------------------------|---------|
+| `name`                   | `string`      | The name of the VNet peering connection.                                    |         |
+| `resource_group_name`    | `string`      | The name of the Azure Resource Group where the VNet peering will be created.|         |
+| `virtual_network_name`   | `string`      | The name of the local virtual network.                                      |         |
+| `remote_virtual_network_id` | `string`   | The ID of the remote virtual network to peer with.                          |         |
+| `allow_forwarded_traffic` | `bool`       | Whether to allow forwarded traffic in the peering. Defaults to `false`.     | `false` |
+| `allow_gateway_transit`   | `bool`       | Whether to allow gateway transit in the peering. Defaults to `false`.       | `false` |
+| `use_remote_gateways`     | `bool`       | Whether to use remote gateways in the peering. Defaults to `false`.         | `false` |
 
 ## Outputs
 
@@ -77,6 +108,12 @@ module "subnet" {
 | Name  | Description                              |
 |-------|------------------------------------------|
 | `id`  | The ID of the created subnet.            |
+
+### VNet Peering Outputs
+
+| Name  | Description                              |
+|-------|------------------------------------------|
+| `id`  | The ID of the created VNet peering.      |
 
 ## Requirements
 
@@ -97,9 +134,18 @@ module "subnet" {
 ├── variables.tf
 ├── versions.tf
 ├── modules/
-│   └── snet/
+│   ├── snet/
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   ├── variables.tf
+│   │   ├── versions.tf
+│   └── peer/
 │       ├── main.tf
 │       ├── outputs.tf
 │       ├── variables.tf
 │       ├── versions.tf
 ```
+
+## License
+
+This module is licensed under the Apache License 2.0. See [LICENSE](LICENSE) for details.
