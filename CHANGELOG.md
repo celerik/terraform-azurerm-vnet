@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.6] - 2025-04-21
+
+### Added
+
+- Added support for optional subnet delegation in the `snet` module. Subnets can now be created with or without delegations based on input variables (`delegation_name`, `service_delegation_name`, and `service_delegation_actions`).
+
 ## [1.0.5] - 2025-04-11
 
 ### Added

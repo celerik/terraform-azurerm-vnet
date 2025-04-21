@@ -39,6 +39,10 @@ module "subnet" {
   snet_address_range                = "10.0.1.0/24"
   service_endpoints                 = ["Microsoft.Storage"]
   private_endpoint_network_policies = false
+
+  delegation_name                   = "my-delegation"
+  service_delegation_name           = "Microsoft.Web/serverFarms"
+  service_delegation_actions        = ["Microsoft.Network/virtualNetworks/subnets/action"]
 }
 ```
 
@@ -81,6 +85,9 @@ module "vnet_peering" {
 | `snet_address_range`             | `string`      | The address range for the subnet in CIDR notation.                          |         |
 | `service_endpoints`              | `set(string)` | A set of service endpoints to enable for the subnet. Defaults to an empty set. | `[]`    |
 | `private_endpoint_network_policies` | `string`     | Whether to enable or disable private endpoint network policies for the subnet. Defaults to `Disabled`. | `Disabled`  |
+| `delegation_name`                           | `string`      | The name of the delegation for the subnet. Leave empty if no delegation is required.                                       |    `""`     |
+| `service_delegation_name`             | `string`      | The name of the service delegation for the subnet. Leave as "None" if no delegation is required.                          |    `"None"`     |
+| `service_delegation_actions`              | `list(string)` | A set of service endpoints to enable for the subnet. Defaults to an empty set. | `[]`    |
 
 ### VNet Peering Inputs
 

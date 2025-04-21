@@ -10,4 +10,16 @@ resource "azurerm_subnet" "snet" {
 
   private_endpoint_network_policies = var.private_endpoint_network_policies
   service_endpoints                 = var.service_endpoints
+
+  dynamic "delegation" {
+    for_each = var.delegation_name != "" && var.service_delegation_name != "None" ? [1] : []
+      content {
+        name = var.delegation_name
+
+        service_delegation {
+          name    = var.service_delegation_name
+          actions = var.service_delegation_actions
+        }
+      }
+    }
 }
