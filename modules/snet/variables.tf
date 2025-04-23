@@ -30,20 +30,13 @@ variable "service_endpoints" {
   default     = []
 }
 
-variable "delegation_name" {
-  type        = string
-  description = "The name of the delegation for the subnet."
-  default     = "" 
-}
-
-variable "service_delegation_name" {
-  type        = string
-  description = "The name of the service delegation for the subnet."
-  default     = "None" 
-}
-
-variable "service_delegation_actions" {
-  type        = list(string)
-  description = "A list of actions for the service delegation."
-  default     = [] 
+variable "delegation" {
+  type = object({
+    name = string
+    service_delegation = object({
+      name    = string
+      actions = list(string)
+    })
+  })
+  default = null
 }

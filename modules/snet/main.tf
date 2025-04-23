@@ -12,14 +12,14 @@ resource "azurerm_subnet" "snet" {
   service_endpoints                 = var.service_endpoints
 
   dynamic "delegation" {
-    for_each = var.delegation_name != "" && var.service_delegation_name != "None" ? [1] : []
-      content {
-        name = var.delegation_name
+    for_each = var.delegation != null ? [var.delegation] : []
+    content {
+      name = delegation.value.name
 
-        service_delegation {
-          name    = var.service_delegation_name
-          actions = var.service_delegation_actions
-        }
+      service_delegation {
+        name    = delegation.value.service_delegation.name
+        actions = delegation.value.service_delegation.actions
       }
     }
+  }
 }
