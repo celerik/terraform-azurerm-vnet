@@ -8,7 +8,7 @@ This Terraform module creates an Azure Virtual Network (VNet) and supports the c
 - Supports custom DNS servers.
 - Allows tagging of resources.
 - Provides outputs for the VNet's ID and name.
-- Includes a submodule for creating subnets with service endpoints, address ranges, and private endpoint network policies.
+- Includes a submodule for creating subnets with service endpoints, address ranges, private endpoint network policies, and optional delegation.
 - Includes a submodule for configuring VNet peering between virtual networks.
 
 ## Usage
@@ -40,9 +40,13 @@ module "subnet" {
   service_endpoints                 = ["Microsoft.Storage"]
   private_endpoint_network_policies = false
 
-  delegation_name                   = "my-delegation"
-  service_delegation_name           = "Microsoft.Web/serverFarms"
-  service_delegation_actions        = ["Microsoft.Network/virtualNetworks/subnets/action"]
+  delegation = {
+    name = "my-delegation"
+    service_delegation = {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
 }
 ```
 
@@ -85,9 +89,21 @@ module "vnet_peering" {
 | `snet_address_range`             | `string`      | The address range for the subnet in CIDR notation.                          |         |
 | `service_endpoints`              | `set(string)` | A set of service endpoints to enable for the subnet. Defaults to an empty set. | `[]`    |
 | `private_endpoint_network_policies` | `string`     | Whether to enable or disable private endpoint network policies for the subnet. Defaults to `Disabled`. | `Disabled`  |
-| `delegation_name`                           | `string`      | The name of the delegation for the subnet. Leave empty if no delegation is required.                                       |    `""`     |
-| `service_delegation_name`             | `string`      | The name of the service delegation for the subnet. Leave as "None" if no delegation is required.                          |    `"None"`     |
-| `service_delegation_actions`              | `list(string)` | A set of service endpoints to enable for the subnet. Defaults to an empty set. | `[]`    |
+| `delegation`                     | `object`      | An optional delegation configuration for the subnet. Defaults to `null`.    | `null`  |
+
+#### Delegation Object
+
+| Name                  | Type          | Description                                                                 |
+|-----------------------|---------------|-----------------------------------------------------------------------------|
+| `name`                | `string`      | The name of the delegation.                                                |
+| `service_delegation`  | `object`      | The service delegation configuration.                                       |
+
+#### Service Delegation Object
+
+| Name                  | Type          | Description                                                                 |
+|-----------------------|---------------|-----------------------------------------------------------------------------|
+| `name`                | `string`      | The name of the service delegation (e.g., `Microsoft.Web/serverFarms`).    |
+| `actions`             | `list(string)`| A list of actions allowed for the service delegation.                       |
 
 ### VNet Peering Inputs
 
