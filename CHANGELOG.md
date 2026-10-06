@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.9] - 2026-10-06
+
+### Changed
+
+- Accept subnet `service_endpoints` as a list so the service endpoint order matches the deployed subnet.
+
 ## [1.0.8] - 2026-10-06
 
 ### Fixed
