@@ -26,7 +26,7 @@ variable "private_endpoint_network_policies" {
 
 variable "service_endpoints" {
   type        = set(string)
-  description = "A set of service endpoints to enable for the subnet (e.g., Microsoft.Storage, Microsoft.Sql). Defaults to an empty set."
+  description = "Service endpoints to enable for the subnet (e.g., Microsoft.Storage, Microsoft.Sql). Each value is applied as a service_endpoint block. Defaults to an empty set."
   default     = []
 }
 

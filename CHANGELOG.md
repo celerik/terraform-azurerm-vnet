@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.8] - 2026-10-06
+
+### Fixed
+
+- Map subnet `service_endpoints` to `service_endpoint` blocks. AzureRM 5 removed the `service_endpoints` argument on `azurerm_subnet`.
+
 ## [1.0.7] - 2025-04-23
 
 ### Updated

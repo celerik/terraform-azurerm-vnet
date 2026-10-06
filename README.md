@@ -87,7 +87,7 @@ module "vnet_peering" {
 | `virtual_network_name`           | `string`      | The name of the virtual network that contains the subnets.                  |         |
 | `name`                           | `string`      | The name of the subnet to be created.                                       |         |
 | `snet_address_range`             | `string`      | The address range for the subnet in CIDR notation.                          |         |
-| `service_endpoints`              | `set(string)` | A set of service endpoints to enable for the subnet. Defaults to an empty set. | `[]`    |
+| `service_endpoints`              | `set(string)` | Service endpoints to enable for the subnet. Each value is applied as a `service_endpoint` block. Defaults to an empty set. | `[]`    |
 | `private_endpoint_network_policies` | `string`     | Whether to enable or disable private endpoint network policies for the subnet. Defaults to `Disabled`. | `Disabled`  |
 | `delegation`                     | `object`      | An optional delegation configuration for the subnet. Defaults to `null`.    | `null`  |
 
@@ -146,7 +146,7 @@ module "vnet_peering" {
 
 ### Providers
 
-- AzureRM `>= 4.0`
+- AzureRM `>= 5.0`
 
 ## File Structure
 

@@ -9,7 +9,13 @@ resource "azurerm_subnet" "snet" {
   address_prefixes     = [var.snet_address_range]
 
   private_endpoint_network_policies = var.private_endpoint_network_policies
-  service_endpoints                 = var.service_endpoints
+
+  dynamic "service_endpoint" {
+    for_each = var.service_endpoints
+    content {
+      service = service_endpoint.value
+    }
+  }
 
   dynamic "delegation" {
     for_each = var.delegation != null ? [var.delegation] : []
